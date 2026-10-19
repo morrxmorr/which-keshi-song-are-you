@@ -50,7 +50,7 @@
       <span class="font-display font-extrabold text-sm tracking-widest text-keshiText uppercase">KESHI DIAGNOSTICS</span>
     </div>
     <div class="text-xs text-neutral-500 tracking-wider font-mono">
-      SYSTEM VER 5.0
+      SYSTEM VER 6.0
     </div>
   </header>
 
@@ -109,7 +109,7 @@
         "Lyric snippet placeholder..."
       </blockquote>
 
-      <p id="matched-vibe" class="text-neutral-400 text-xs max-w-md mx-auto mb-6 leading-relaxed font-mono">
+      <p id="matched-vibe" class="text-neutral-300 text-xs sm:text-sm max-w-md mx-auto mb-6 leading-relaxed font-mono text-left bg-neutral-900/60 p-4 border border-keshiBorder rounded-lg">
         Vibe breakdown placeholder...
       </p>
 
@@ -148,4 +148,128 @@
           href="https://ko-fi.com" 
           target="_blank"
           id="tip-jar-link"
-          class="w-full sm:w-1/2 px-6 py-4 bg-amber-500 text-black font-display font-extrabold text-xs uppercase tracking-widest rounded-lg hover:bg-amber-400 transition duration-200 shadow-lg text-center active:scale
+          class="w-full sm:w-1/2 px-6 py-4 bg-amber-500 text-black font-display font-extrabold text-xs uppercase tracking-widest rounded-lg hover:bg-amber-400 transition duration-200 shadow-lg text-center active:scale-95 flex items-center justify-center gap-1"
+        >
+          <span>☕ Drop a $1 Tip</span>
+        </a>
+      </div>
+
+      <p class="text-xs font-mono text-neutral-500 max-w-sm mx-auto mt-4 leading-relaxed">
+        Cards are 100% free! If you enjoyed this diagnostic, dropping $1 into our digital tip jar helps keep the site running.
+      </p>
+    </div>
+
+  </main>
+
+  <!-- Hidden Off-Screen Canvas (1080 x 1920) -->
+  <canvas id="story-canvas" width="1080" height="1920" class="hidden"></canvas>
+
+  <!-- Footer -->
+  <footer class="w-full border-t border-keshiBorder px-6 py-4 text-center text-xs text-neutral-600">
+    FAN PROJECT • NOT AFFILIATED WITH KESHI / ISLAND RECORDS
+  </footer>
+
+  <!-- Quiz & Canvas Engine Script -->
+  <script>
+    // 16 KESHI TRACK DATABASE WITH DETAILED MATCH REASONS
+    const tracks = {
+      "LIMBO": { 
+        lyric: "Ain't no way around it, I've been feeling down lately.", 
+        vibe: "DIAGNOSIS: Your choices reveal an introspective soul navigating an unmoored transition period. You process heavy feelings through solo late-night drives, ambient music, and quiet self-reflection, making LIMBO your exact emotional frequency." 
+      },
+      "UNDERSTAND": { 
+        lyric: "Never thought that I would find somebody like you.", 
+        vibe: "DIAGNOSIS: You possess a deeply loyal and tender heart that values unhurried emotional safety above all else. Your answers highlight a preference for intimate 1-on-1 conversations and quiet devotion, aligning perfectly with UNDERSTAND." 
+      },
+      "beside you": { 
+        lyric: "I just wanna sit right beside you, watch the world turn.", 
+        vibe: "DIAGNOSIS: Your profile leans toward low-stress comfort and quiet companionship. You find peace in simple, unspoken moments with people who let you drop your guard without judgment, making beside you your defining aura." 
+      },
+      "like i need u": { 
+        lyric: "Nobody loves you the way that I do.", 
+        vibe: "DIAGNOSIS: You love with uninhibited intensity and unwavering clarity. When you care about someone, you commit your entire heart to the connection, matching the rhythmic, melancholic obsession embedded in like i need u." 
+      },
+      "2 soon": { 
+        lyric: "Drink till I'm drunk again, feelings I'm drowning in.", 
+        vibe: "DIAGNOSIS: Your answers reflect a spontaneous, feeling-first approach to emotional overload. You process stress and heartbreak through late nights and cathartic release, perfectly mirroring the chaotic energy of 2 soon." 
+      },
+      "Soft Spot": { 
+        lyric: "I still have a soft spot for you, even if we grew apart.", 
+        vibe: "DIAGNOSIS: You carry memories with quiet grace and bittersweet tenderness. Even when paths diverge, you hold onto the good times without holding grudges, making Soft Spot an exact match for your gentle nostalgia." 
+      },
+      "IT'S YOU (feat. keshi) – MAX": { 
+        lyric: "It's you, loving the way that you move.", 
+        vibe: "DIAGNOSIS: Your personality shines with bright romanticism and effortless warmth. You naturally appreciate genuine affection and romanticize life's beautiful highlights, aligning directly with the golden-hour charm of IT'S YOU." 
+      },
+      "drunk": { 
+        lyric: "I get too drunk when I start missing you.", 
+        vibe: "DIAGNOSIS: Your choices signal raw, unfiltered emotional honesty. You refuse to fake your feelings when missing someone, processing longing with unfiltered vulnerability and hazy reflection, matching the spirit of drunk." 
+      },
+      "right here": { 
+        lyric: "If you ever need me, know that I'll be right here.", 
+        vibe: "DIAGNOSIS: You are the steadfast anchor in your circle—unconditionally loyal, patient, and reliable. You offer quiet refuge to those you care about, embodying the enduring pillar of support found in right here." 
+      },
+      "skeletons": { 
+        lyric: "Stressed out, stretched out, hiding all my skeletons.", 
+        vibe: "DIAGNOSIS: Your profile highlights a high-achieving exterior masking quiet exhaustion and pressure. You navigate internal battles behind a calm silhouette, matching the deeply honest vulnerability of skeletons." 
+      },
+      "SOMEBODY": { 
+        lyric: "Tell me that you want me, baby, even if you lie.", 
+        vibe: "DIAGNOSIS: You carry a high-fashion, enigmatic charm while holding a desire for magnetic connection and validation. You move through life with sleek confidence, mirroring the moodiness of SOMEBODY." 
+      },
+      "less of you": { 
+        lyric: "I just need a little less of you and more of myself.", 
+        vibe: "DIAGNOSIS: Your diagnostic reveals an empowering shift toward independence and self-preservation. You know when to step back, set firm boundaries, and reclaim your peace, perfectly aligned with less of you." 
+      },
+      "i swear i'll never leave again": { 
+        lyric: "I swear I'll never leave again, I'm sorry that I let you down.", 
+        vibe: "DIAGNOSIS: You possess deep empathy, self-awareness, and a longing for emotional restoration. When you make a mistake, you face it with sincerity and gentle conviction, matching i swear i'll never leave again." 
+      },
+      "Say": { 
+        lyric: "Say what you want, just say what you mean.", 
+        vibe: "DIAGNOSIS: You have zero patience for indirect games or unspoken tension. Your quiz profile values momentum, groove, and clear communication, making the direct, punchy energy of Say your ideal match." 
+      },
+      "ANGOSTURA": { 
+        lyric: "Pour me up a glass, sip it slow with you.", 
+        vibe: "DIAGNOSIS: You thrive in smooth, velvet late-night atmospheres filled with subtle romance and effortless style. You savor intimate moments without rush, reflecting the intoxicating lounge vibe of ANGOSTURA." 
+      },
+      "Kiss Me Right": { 
+        lyric: "Kiss me right before you walk out the door.", 
+        vibe: "DIAGNOSIS: Your choices reveal a deep appreciation for tender urgency and fleeting physical connection. You live fully in the present moment, capturing the passionate, bittersweet departure of Kiss Me Right." 
+      }
+    };
+
+    // 15 BUZZFEED-STYLE QUESTIONS
+    const questions = [
+      {
+        text: "What is your go-to late-night coping mechanism?",
+        options: [
+          { text: "Driving alone with zero destination", track: "LIMBO" },
+          { text: "Texting someone I shouldn't", track: "2 soon" },
+          { text: "Re-reading old message threads", track: "Soft Spot" },
+          { text: "Playing soft music in dark silence", track: "UNDERSTAND" }
+        ]
+      },
+      {
+        text: "Pick a visual aesthetic for your daily phone wallpaper:",
+        options: [
+          { text: "Hiding all your feelings behind dark silhouettes", track: "skeletons" },
+          { text: "Warm blurry grain photography", track: "beside you" },
+          { text: "Monochrome brutalist typography", track: "SOMEBODY" },
+          { text: "Late night city lights before parting ways", track: "Kiss Me Right" }
+        ]
+      },
+      {
+        text: "How do you handle a sudden emotional fallout?",
+        options: [
+          { text: "Disappear and go off the grid", track: "less of you" },
+          { text: "Pour feelings out into unfiltered notes", track: "drunk" },
+          { text: "Stay patient and keep the door open", track: "right here" },
+          { text: "Pour a glass and sip it slow", track: "ANGOSTURA" }
+        ]
+      },
+      {
+        text: "Choose a setting for an ideal conversation:",
+        options: [
+          { text: "Bright, golden-hour sunlight with someone special", track: "IT'S YOU (feat. keshi) – MAX" },
+          { text: "Quiet bedroom with ambient
