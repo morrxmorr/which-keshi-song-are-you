@@ -43,6 +43,9 @@
 </head>
 <body class="grid-bg min-h-screen flex flex-col justify-between font-sans antialiased selection:bg-keshiText selection:text-keshiDark">
 
+  <!-- Hidden Asset Image Element for Canvas Rendering -->
+  <img id="keshi-artist-img" src="keshi prof 2.webp" alt="Keshi Profile" class="hidden" />
+
   <!-- Header Navigation -->
   <header class="w-full border-b border-keshiBorder px-6 py-4 flex justify-between items-center bg-keshiDark/80 backdrop-blur-md sticky top-0 z-50">
     <div class="flex items-center space-x-2">
@@ -50,7 +53,7 @@
       <span class="font-display font-extrabold text-sm tracking-widest text-keshiText uppercase">KESHI DIAGNOSTICS</span>
     </div>
     <div class="text-xs text-neutral-500 tracking-wider font-mono">
-      SYSTEM VER 7.0
+      SYSTEM VER 8.0
     </div>
   </header>
 
@@ -388,6 +391,16 @@
       if (startBtn) {
         startBtn.addEventListener('click', startQuiz);
       }
+
+      const artistImg = document.getElementById('keshi-artist-img');
+      if (artistImg) {
+        artistImg.onload = () => {
+          if (!document.getElementById('result-screen').classList.contains('hidden')) {
+            renderCardCanvas();
+          }
+        };
+      }
+
       Object.keys(tracks).forEach(track => scores[track] = 0);
     });
 
@@ -457,7 +470,7 @@
       renderCardCanvas();
     }
 
-    // CANVAS ENGINE SCALED FOR INSTAGRAM STORY READABILITY (1080 x 1920)
+    // CANVAS ENGINE WITH KESHI ARTIST PHOTO INTEGRATION
     function renderCardCanvas() {
       const canvas = document.getElementById('story-canvas');
       const ctx = canvas.getContext('2d');
@@ -489,7 +502,7 @@
       drawCornerCrosshair(ctx, 50, 1870);
       drawCornerCrosshair(ctx, 1030, 1870);
 
-      // 5. Header Section (Enlarged Header Text)
+      // 5. Header Section
       ctx.fillStyle = "#EF4444";
       ctx.beginPath();
       ctx.arc(100, 130, 10, 0, Math.PI * 2);
@@ -510,7 +523,7 @@
       ctx.lineTo(980, 175);
       ctx.stroke();
 
-      // 6. User Handle Badge (Scaled up for Story view)
+      // 6. User Handle Badge
       ctx.fillStyle = "#121212";
       ctx.fillRect(100, 215, 480, 70);
       ctx.strokeStyle = "#2A2A2A";
@@ -520,87 +533,100 @@
       ctx.font = "bold 28px 'Space Grotesk', monospace";
       ctx.fillText(userHandle.toUpperCase(), 125, 260);
 
-      // 7. Match Section Label (Enlarged)
+      // 7. Match Section Label
       ctx.fillStyle = "#666666";
       ctx.font = "bold 26px 'Space Grotesk', sans-serif";
-      ctx.fillText("// MATCHED AURA SPECTRUM", 100, 360);
+      ctx.fillText("// MATCHED AURA SPECTRUM", 100, 350);
 
-      // 8. Track Title (Huge Display Font: 92px)
-      ctx.font = "extrabold 92px 'Syne', sans-serif";
+      // 8. Track Title
+      ctx.font = "extrabold 84px 'Syne', sans-serif";
       const trackTitleUpper = matchedTrackResult.toUpperCase();
       
       const words = trackTitleUpper.split(' ');
       let titleLine = '';
-      let titleY = 460;
+      let titleY = 440;
       for (let n = 0; n < words.length; n++) {
         let testL = titleLine + words[n] + ' ';
         if (ctx.measureText(testL).width > 860 && n > 0) {
           drawGradientText(ctx, titleLine, 100, titleY);
           titleLine = words[n] + ' ';
-          titleY += 98;
+          titleY += 90;
         } else {
           titleLine = testL;
         }
       }
       drawGradientText(ctx, titleLine, 100, titleY);
 
-      // 9. Audio Waveform Visualizer
-      let waveY = titleY + 60;
+      // 9. ARTIST PHOTO HERO BOX (keshi prof 2.webp)
+      let photoY = titleY + 30;
+      const artistImg = document.getElementById('keshi-artist-img');
+      if (artistImg && artistImg.complete && artistImg.naturalWidth !== 0) {
+        drawCoverImage(ctx, artistImg, 100, photoY, 880, 360);
+      } else {
+        // Fallback Dark Box if image is loading
+        ctx.fillStyle = "#141414";
+        ctx.fillRect(100, photoY, 880, 360);
+        ctx.strokeStyle = "#2A2A2A";
+        ctx.strokeRect(100, photoY, 880, 360);
+      }
+
+      // 10. Audio Waveform Visualizer
+      let waveY = photoY + 390;
       ctx.fillStyle = "#121212";
-      ctx.fillRect(100, waveY, 880, 85);
+      ctx.fillRect(100, waveY, 880, 75);
       ctx.strokeStyle = "#2A2A2A";
-      ctx.strokeRect(100, waveY, 880, 85);
+      ctx.strokeRect(100, waveY, 880, 75);
 
       const heights = [24, 48, 65, 32, 58, 72, 42, 22, 68, 52, 35, 60, 75, 42, 58, 32, 68, 48, 22, 52, 65, 35, 26, 42];
       for (let b = 0; b < 24; b++) {
         const barH = heights[b % heights.length];
         const barX = 130 + (b * 35);
-        const barYPos = waveY + 42 - (barH / 2);
+        const barYPos = waveY + 37 - (barH / 2);
         ctx.fillStyle = b % 3 === 0 ? "#F5F5F7" : "#444444";
         ctx.fillRect(barX, barYPos, 14, barH);
       }
 
-      // 10. Styled Lyric Box (Enlarged Quote Typography: 38px)
-      let lyricBoxY = waveY + 130;
+      // 11. Styled Lyric Box
+      let lyricBoxY = waveY + 110;
       ctx.fillStyle = "#121212";
-      ctx.fillRect(100, lyricBoxY, 880, 250);
+      ctx.fillRect(100, lyricBoxY, 880, 220);
       ctx.strokeStyle = "#2A2A2A";
-      ctx.strokeRect(100, lyricBoxY, 880, 250);
+      ctx.strokeRect(100, lyricBoxY, 880, 220);
 
       ctx.fillStyle = "#F5F5F7";
-      ctx.fillRect(100, lyricBoxY, 12, 250);
+      ctx.fillRect(100, lyricBoxY, 12, 220);
 
       ctx.fillStyle = "#888888";
-      ctx.font = "bold 24px 'Space Grotesk', monospace";
-      ctx.fillText("KEY LYRIC QUOTE:", 140, lyricBoxY + 48);
+      ctx.font = "bold 22px 'Space Grotesk', monospace";
+      ctx.fillText("KEY LYRIC QUOTE:", 140, lyricBoxY + 42);
 
       ctx.fillStyle = "#F5F5F7";
-      ctx.font = "italic 38px 'Space Grotesk', sans-serif";
+      ctx.font = "italic 34px 'Space Grotesk', sans-serif";
       
       const lyricWords = `"${data.lyric}"`.split(' ');
       let lyricLine = '';
-      let currentLyricY = lyricBoxY + 108;
+      let currentLyricY = lyricBoxY + 95;
       for (let i = 0; i < lyricWords.length; i++) {
         let testL = lyricLine + lyricWords[i] + ' ';
         if (ctx.measureText(testL).width > 780 && i > 0) {
           ctx.fillText(lyricLine, 140, currentLyricY);
           lyricLine = lyricWords[i] + ' ';
-          currentLyricY += 50;
+          currentLyricY += 44;
         } else {
           lyricLine = testL;
         }
       }
       ctx.fillText(lyricLine, 140, currentLyricY);
 
-      // 11. Lengthened Vibe / Diagnosis Section (Enlarged Body: 30px)
-      let vibeY = lyricBoxY + 300;
+      // 12. Vibe Diagnosis Section
+      let vibeY = lyricBoxY + 260;
       ctx.fillStyle = "#666666";
-      ctx.font = "bold 28px 'Space Grotesk', sans-serif";
+      ctx.font = "bold 26px 'Space Grotesk', sans-serif";
       ctx.fillText("// EXTENDED MATCH DIAGNOSIS", 100, vibeY);
 
-      vibeY += 50;
+      vibeY += 45;
       ctx.fillStyle = "#CCCCCC";
-      ctx.font = "30px 'Space Grotesk', sans-serif";
+      ctx.font = "26px 'Space Grotesk', sans-serif";
       
       const vibeWords = data.vibe.split(' ');
       let vibeLine = '';
@@ -610,25 +636,64 @@
         if (ctx.measureText(testV).width > 880 && j > 0) {
           ctx.fillText(vibeLine, 100, currentVibeY);
           vibeLine = vibeWords[j] + ' ';
-          currentVibeY += 44;
+          currentVibeY += 38;
         } else {
           vibeLine = testV;
         }
       }
       ctx.fillText(vibeLine, 100, currentVibeY);
 
-      // 12. Vector Barcode Graphic
+      // 13. Vector Barcode Graphic
       drawVectorBarcode(ctx, 100, 1680, 880, 55);
 
-      // 13. Card Footer Stamps (Scaled for High-Res Displays)
+      // 14. Card Footer Stamps
       ctx.fillStyle = "#555555";
       ctx.font = "bold 24px 'Space Grotesk', monospace";
       ctx.fillText("WHAT KESHI SONG ARE YOU?", 100, 1775);
       ctx.fillText("VERIFIED BY KESHI DIAGNOSTICS HUB", 540, 1775);
 
-      // 14. Export to Preview Tag
+      // 15. Export to Preview Tag
       const dataUrl = canvas.toDataURL('image/png');
       document.getElementById('card-preview-img').src = dataUrl;
+    }
+
+    // Helper: Draw Cover Aspect-Ratio Cropped Image
+    function drawCoverImage(ctx, img, x, y, w, h) {
+      const imgRatio = img.naturalWidth / img.naturalHeight;
+      const frameRatio = w / h;
+      let sx, sy, sw, sh;
+
+      if (imgRatio > frameRatio) {
+        sh = img.naturalHeight;
+        sw = sh * frameRatio;
+        sx = (img.naturalWidth - sw) / 2;
+        sy = 0;
+      } else {
+        sw = img.naturalWidth;
+        sh = sw / frameRatio;
+        sx = 0;
+        sy = (img.naturalHeight - sh) / 2;
+      }
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(x, y, w, h);
+      ctx.clip();
+      ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+      
+      // Gradient overlay blending image into canvas background
+      const fadeGrad = ctx.createLinearGradient(x, y + h - 140, x, y + h);
+      fadeGrad.addColorStop(0, "rgba(10, 10, 10, 0)");
+      fadeGrad.addColorStop(1, "rgba(10, 10, 10, 0.85)");
+      ctx.fillStyle = fadeGrad;
+      ctx.fillRect(x, y + h - 140, w, 140);
+
+      ctx.restore();
+
+      // Border and framing
+      ctx.strokeStyle = "#2A2A2A";
+      ctx.lineWidth = 3;
+      ctx.strokeRect(x, y, w, h);
     }
 
     function drawCornerCrosshair(ctx, x, y) {
