@@ -9,7 +9,7 @@
   <!-- Custom Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
@@ -19,8 +19,8 @@
             display: ['Syne', 'sans-serif'],
           },
           colors: {
-            keshiDark: '#0D0D0D',
-            keshiCard: '#141414',
+            keshiDark: '#0A0A0A',
+            keshiCard: '#121212',
             keshiBorder: '#262626',
             keshiText: '#F5F5F7',
             keshiAccent: '#333333',
@@ -31,12 +31,12 @@
   </script>
   <style>
     body {
-      background-color: #0D0D0D;
+      background-color: #0A0A0A;
       color: #F5F5F7;
     }
     .grid-bg {
-      background-image: linear-gradient(to right, #1a1a1a 1px, transparent 1px),
-                        linear-gradient(to bottom, #1a1a1a 1px, transparent 1px);
+      background-image: linear-gradient(to right, #171717 1px, transparent 1px),
+                        linear-gradient(to bottom, #171717 1px, transparent 1px);
       background-size: 40px 40px;
     }
   </style>
@@ -50,7 +50,7 @@
       <span class="font-display font-extrabold text-sm tracking-widest text-keshiText uppercase">KESHI DIAGNOSTICS</span>
     </div>
     <div class="text-xs text-neutral-500 tracking-wider font-mono">
-      SYSTEM VER 4.0
+      SYSTEM VER 5.0
     </div>
   </header>
 
@@ -129,7 +129,7 @@
 
       <!-- Card Preview Container -->
       <div class="my-6 max-w-xs mx-auto">
-        <h3 class="text-xs font-mono text-neutral-500 uppercase tracking-widest mb-3">4K STORY CARD PREVIEW</h3>
+        <h3 class="text-xs font-mono text-neutral-500 uppercase tracking-widest mb-3">STYLIZED 4K STORY CARD</h3>
         <div id="preview-wrapper" class="relative border border-keshiBorder rounded-lg overflow-hidden shadow-2xl bg-black">
           <img id="card-preview-img" src="" alt="4K Story Card Preview" class="w-full h-auto block" />
         </div>
@@ -148,394 +148,4 @@
           href="https://ko-fi.com" 
           target="_blank"
           id="tip-jar-link"
-          class="w-full sm:w-1/2 px-6 py-4 bg-amber-500 text-black font-display font-extrabold text-xs uppercase tracking-widest rounded-lg hover:bg-amber-400 transition duration-200 shadow-lg text-center active:scale-95 flex items-center justify-center gap-1"
-        >
-          <span>☕ Drop a $1 Tip</span>
-        </a>
-      </div>
-
-      <p class="text-xs font-mono text-neutral-500 max-w-sm mx-auto mt-4 leading-relaxed">
-        Cards are 100% free! If you enjoyed this diagnostic, dropping $1 into our digital tip jar helps keep the site running.
-      </p>
-    </div>
-
-  </main>
-
-  <!-- Hidden Off-Screen Canvas (1080 x 1920) -->
-  <canvas id="story-canvas" width="1080" height="1920" class="hidden"></canvas>
-
-  <!-- Footer -->
-  <footer class="w-full border-t border-keshiBorder px-6 py-4 text-center text-xs text-neutral-600">
-    FAN PROJECT • NOT AFFILIATED WITH KESHI / ISLAND RECORDS
-  </footer>
-
-  <!-- Quiz & Canvas Engine Script -->
-  <script>
-    // 16 KESHI TRACK DATABASE
-    const tracks = {
-      "LIMBO": { lyric: "Ain't no way around it, I've been feeling down lately.", vibe: "Late night existentialism, driving through ambient city lights alone." },
-      "UNDERSTAND": { lyric: "Never thought that I would find somebody like you.", vibe: "Soft devotion, gentle emotional vulnerability, peaceful quiet hours." },
-      "beside you": { lyric: "I just wanna sit right beside you, watch the world turn.", vibe: "Warm intimacy, low-stress connection, quiet unspoken comfort." },
-      "like i need u": { lyric: "Nobody loves you the way that I do.", vibe: "Obsessive devotion, rhythmic melancholia, intense emotional clarity." },
-      "2 soon": { lyric: "Drink till I'm drunk again, feelings I'm drowning in.", vibe: "Impulsive coping, late nights, chaotic melancholic energy." },
-      "Soft Spot": { lyric: "I still have a soft spot for you, even if we grew apart.", vibe: "Bittersweet nostalgia, quiet affection, lingering memories." },
-      "IT'S YOU (feat. keshi) – MAX": { lyric: "It's you, loving the way that you move.", vibe: "Bright, soulful romanticism, effortless charm, warm golden-hour affection." },
-      "drunk": { lyric: "I get too drunk when I start missing you.", vibe: "Raw heartbreak, hazy nights, unfiltered emotional outbursts." },
-      "right here": { lyric: "If you ever need me, know that I'll be right here.", vibe: "Unconditional loyalty, quiet support, enduring patience." },
-      "skeletons": { lyric: "Stressed out, stretched out, hiding all my skeletons.", vibe: "Exhaustion under pressure, quiet vulnerability, masking burnout behind closed doors." },
-      "SOMEBODY": { lyric: "Tell me that you want me, baby, even if you lie.", vibe: "Craving validation, high-fashion moody atmosphere, magnetic charm." },
-      "less of you": { lyric: "I just need a little less of you and more of myself.", vibe: "Setting boundaries, reclaiming independence, bitter self-realization." },
-      "i swear i'll never leave again": { lyric: "I swear I'll never leave again, I'm sorry that I let you down.", vibe: "Deep remorse, quiet longing for home, gentle acoustic promise." },
-      "Say": { lyric: "Say what you want, just say what you mean.", vibe: "Groove-driven frustration, direct communication, sleek modern pop rhythm." },
-      "ANGOSTURA": { lyric: "Pour me up a glass, sip it slow with you.", vibe: "Smooth late-night lounge energy, intoxicating romance, velvet moodiness." },
-      "Kiss Me Right": { lyric: "Kiss me right before you walk out the door.", vibe: "Tender urgency, fleeting physical connection, bittersweet parting moments." }
-    };
-
-    // 15 BUZZFEED-STYLE QUESTIONS
-    const questions = [
-      {
-        text: "What is your go-to late-night coping mechanism?",
-        options: [
-          { text: "Driving alone with zero destination", track: "LIMBO" },
-          { text: "Texting someone I shouldn't", track: "2 soon" },
-          { text: "Re-reading old message threads", track: "Soft Spot" },
-          { text: "Playing soft music in dark silence", track: "UNDERSTAND" }
-        ]
-      },
-      {
-        text: "Pick a visual aesthetic for your daily phone wallpaper:",
-        options: [
-          { text: "Hiding all your feelings behind dark silhouettes", track: "skeletons" },
-          { text: "Warm blurry grain photography", track: "beside you" },
-          { text: "Monochrome brutalist typography", track: "SOMEBODY" },
-          { text: "Late night city lights before parting ways", track: "Kiss Me Right" }
-        ]
-      },
-      {
-        text: "How do you handle a sudden emotional fallout?",
-        options: [
-          { text: "Disappear and go off the grid", track: "less of you" },
-          { text: "Pour feelings out into unfiltered notes", track: "drunk" },
-          { text: "Stay patient and keep the door open", track: "right here" },
-          { text: "Pour a glass and sip it slow", track: "ANGOSTURA" }
-        ]
-      },
-      {
-        text: "Choose a setting for an ideal conversation:",
-        options: [
-          { text: "Bright, golden-hour sunlight with someone special", track: "IT'S YOU (feat. keshi) – MAX" },
-          { text: "Quiet bedroom with ambient lamps", track: "UNDERSTAND" },
-          { text: "Crowded dim bar with loud bass", track: "2 soon" },
-          { text: "Direct, unfiltered talk where nothing is hidden", track: "Say" }
-        ]
-      },
-      {
-        text: "What is your biggest flaw in romantic relationships?",
-        options: [
-          { text: "Giving way too much too fast", track: "like i need u" },
-          { text: "Holding onto past memories too long", track: "Soft Spot" },
-          { text: "Apologizing endlessly for fear of losing them", track: "i swear i'll never leave again" },
-          { text: "Expecting people to just say what they mean", track: "Say" }
-        ]
-      },
-      {
-        text: "Select a beverage vibe for your mood right now:",
-        options: [
-          { text: "Black iced coffee in a glass", track: "LIMBO" },
-          { text: "Whiskey or cocktails on the rocks", track: "drunk" },
-          { text: "Warm matcha or chamomile tea", track: "beside you" },
-          { text: "Energy drink when you're overwhelmed", track: "skeletons" }
-        ]
-      },
-      {
-        text: "What kind of lyrics resonate with you most?",
-        options: [
-          { text: "Devoted love that feels endless", track: "UNDERSTAND" },
-          { text: "Smooth velvet night romance", track: "ANGOSTURA" },
-          { text: "Raw, unhinged emotional honesty", track: "like i need u" },
-          { text: "Tender urgency before saying goodbye", track: "Kiss Me Right" }
-        ]
-      },
-      {
-        text: "How do you act when you catch feelings for someone new?",
-        options: [
-          { text: "Become overly attentive and loyal", track: "right here" },
-          { text: "Try to stay cool and unbothered", track: "SOMEBODY" },
-          { text: "Mask your stress and play it off", track: "skeletons" },
-          { text: "Enjoy every small, quiet interaction", track: "beside you" }
-        ]
-      },
-      {
-        text: "Pick an album era energy:",
-        options: [
-          { text: "Sleek, groove-driven modern pop", track: "Say" },
-          { text: "Acoustic guitar and delicate vocals", track: "Soft Spot" },
-          { text: "Lo-fi ambient soundscapes", track: "LIMBO" },
-          { text: "Bright, soulful romantic acoustics", track: "IT'S YOU (feat. keshi) – MAX" }
-        ]
-      },
-      {
-        text: "What is your current mental state in one word?",
-        options: [
-          { text: "Searching", track: "LIMBO" },
-          { text: "Peaceful", track: "UNDERSTAND" },
-          { text: "Direct", track: "Say" },
-          { text: "Nostalgic", track: "Soft Spot" }
-        ]
-      },
-      {
-        text: "If you could escape right now, where would you go?",
-        options: [
-          { text: "A quiet doorway under city rain", track: "Kiss Me Right" },
-          { text: "An isolated cabin far away", track: "less of you" },
-          { text: "A bustling nightlife district in Tokyo", track: "SOMEBODY" },
-          { text: "A quiet rooftop overlooking the skyline", track: "right here" }
-        ]
-      },
-      {
-        text: "How do you view your exes?",
-        options: [
-          { text: "No bad blood, I hope they're doing well", track: "Soft Spot" },
-          { text: "Complete separation and distance needed", track: "less of you" },
-          { text: "Deep remorse over what I did wrong", track: "i swear i'll never leave again" },
-          { text: "Effortless warmth with zero regret", track: "IT'S YOU (feat. keshi) – MAX" }
-        ]
-      },
-      {
-        text: "Pick a time of day when you feel most like yourself:",
-        options: [
-          { text: "3:00 AM dead silence", track: "2 soon" },
-          { text: "Velvet midnight lounge hours", track: "ANGOSTURA" },
-          { text: "Fleeting moments right before leaving", track: "Kiss Me Right" },
-          { text: "Early morning calm", track: "UNDERSTAND" }
-        ]
-      },
-      {
-        text: "What drives your decisions most?",
-        options: [
-          { text: "Raw intuition and gut impulse", track: "drunk" },
-          { text: "Deep loyalty to people I love", track: "like i need u" },
-          { text: "Urgency to make things right before it's too late", track: "Kiss Me Right" },
-          { text: "Frustration with indirect games", track: "Say" }
-        ]
-      },
-      {
-        text: "Finally, how do you want people to remember you?",
-        options: [
-          { text: "Someone who stayed true through everything", track: "right here" },
-          { text: "Someone unforgettable and distinct", track: "SOMEBODY" },
-          { text: "Someone who promised to never let them down", track: "i swear i'll never leave again" },
-          { text: "Someone who brought comfort and warmth", track: "beside you" }
-        ]
-      }
-    ];
-
-    let currentQuestion = 0;
-    let scores = {};
-    let matchedTrackResult = "LIMBO";
-
-    // Initialize Scores
-    Object.keys(tracks).forEach(track => scores[track] = 0);
-
-    function startQuiz() {
-      document.getElementById('landing-screen').classList.add('hidden');
-      document.getElementById('quiz-screen').classList.remove('hidden');
-      renderQuestion();
-    }
-
-    function renderQuestion() {
-      const q = questions[currentQuestion];
-      document.getElementById('question-tracker').innerText = `QUESTION ${String(currentQuestion + 1).padStart(2, '0')} / 15`;
-      
-      const percent = Math.round(((currentQuestion) / 15) * 100);
-      document.getElementById('progress-percent').innerText = `${percent}% COMPLETE`;
-      document.getElementById('progress-bar').style.width = `${percent}%`;
-
-      document.getElementById('question-text').innerText = q.text;
-
-      const container = document.getElementById('options-container');
-      container.innerHTML = '';
-
-      q.options.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.className = "w-full text-left p-4 rounded-lg bg-keshiDark border border-keshiBorder hover:border-keshiText hover:bg-neutral-900 transition duration-150 text-sm sm:text-base text-keshiText font-medium";
-        btn.innerText = opt.text;
-        btn.onclick = () => selectOption(opt.track);
-        container.appendChild(btn);
-      });
-    }
-
-    function selectOption(track) {
-      scores[track] = (scores[track] || 0) + 1;
-      currentQuestion++;
-
-      if (currentQuestion < questions.length) {
-        renderQuestion();
-      } else {
-        showResults();
-      }
-    }
-
-    function showResults() {
-      document.getElementById('quiz-screen').classList.add('hidden');
-      document.getElementById('result-screen').classList.remove('hidden');
-
-      let topTrack = "LIMBO";
-      let maxScore = -1;
-      for (const [track, score] of Object.entries(scores)) {
-        if (score > maxScore) {
-          maxScore = score;
-          topTrack = track;
-        }
-      }
-
-      matchedTrackResult = topTrack;
-      const matchData = tracks[topTrack];
-      
-      document.getElementById('matched-track').innerText = topTrack;
-      document.getElementById('matched-lyric').innerText = `"${matchData.lyric}"`;
-      document.getElementById('matched-vibe').innerText = matchData.vibe;
-
-      renderCardCanvas();
-    }
-
-    function renderCardCanvas() {
-      const canvas = document.getElementById('story-canvas');
-      const ctx = canvas.getContext('2d');
-      const data = tracks[matchedTrackResult];
-      const handleInput = document.getElementById('user-handle').value.trim();
-      const userHandle = handleInput ? (handleInput.startsWith('@') ? handleInput : `@${handleInput}`) : "@ANONYMOUS_FAN";
-
-      // 1. Background Fill
-      ctx.fillStyle = "#0D0D0D";
-      ctx.fillRect(0, 0, 1080, 1920);
-
-      // 2. Border Framing
-      ctx.strokeStyle = "#262626";
-      ctx.lineWidth = 4;
-      ctx.strokeRect(60, 60, 960, 1800);
-
-      // 3. Header Section
-      ctx.fillStyle = "#F5F5F7";
-      ctx.font = "bold 32px 'Space Grotesk', sans-serif";
-      ctx.fillText("KESHI DIAGNOSTICS", 100, 140);
-
-      ctx.fillStyle = "#666666";
-      ctx.font = "24px 'Space Grotesk', monospace";
-      ctx.fillText(`ID: #${Math.floor(100000 + Math.random() * 900000)}`, 780, 140);
-
-      ctx.beginPath();
-      ctx.moveTo(100, 170);
-      ctx.lineTo(980, 170);
-      ctx.strokeStyle = "#262626";
-      ctx.stroke();
-
-      // 4. User Handle Badge
-      ctx.fillStyle = "#141414";
-      ctx.fillRect(100, 240, 400, 60);
-      ctx.strokeStyle = "#333333";
-      ctx.strokeRect(100, 240, 400, 60);
-
-      ctx.fillStyle = "#F5F5F7";
-      ctx.font = "24px 'Space Grotesk', monospace";
-      ctx.fillText(userHandle, 120, 278);
-
-      // 5. Section Label
-      ctx.fillStyle = "#888888";
-      ctx.font = "bold 28px 'Space Grotesk', sans-serif";
-      ctx.fillText("MATCHED DIAGNOSTIC TRACK:", 100, 440);
-
-      // 6. Matched Track Title
-      ctx.fillStyle = "#F5F5F7";
-      ctx.font = "bold 72px 'Syne', sans-serif";
-      
-      const words = matchedTrackResult.toUpperCase().split(' ');
-      let line = '';
-      let y = 530;
-      for (let n = 0; n < words.length; n++) {
-        let testLine = line + words[n] + ' ';
-        let metrics = ctx.measureText(testLine);
-        if (metrics.width > 880 && n > 0) {
-          ctx.fillText(line, 100, y);
-          line = words[n] + ' ';
-          y += 85;
-        } else {
-          line = testLine;
-        }
-      }
-      ctx.fillText(line, 100, y);
-
-      // 7. Lyric Quote Box
-      y += 80;
-      ctx.fillStyle = "#141414";
-      ctx.fillRect(100, y, 880, 220);
-      ctx.strokeStyle = "#333333";
-      ctx.strokeRect(100, y, 880, 220);
-
-      ctx.fillStyle = "#F5F5F7";
-      ctx.fillRect(100, y, 12, 220);
-
-      ctx.fillStyle = "#CCCCCC";
-      ctx.font = "italic 32px 'Space Grotesk', sans-serif";
-      
-      const lyricWords = `"${data.lyric}"`.split(' ');
-      let lyricLine = '';
-      let lyricY = y + 70;
-      for (let i = 0; i < lyricWords.length; i++) {
-        let testL = lyricLine + lyricWords[i] + ' ';
-        if (ctx.measureText(testL).width > 800 && i > 0) {
-          ctx.fillText(lyricLine, 140, lyricY);
-          lyricLine = lyricWords[i] + ' ';
-          lyricY += 45;
-        } else {
-          lyricLine = testL;
-        }
-      }
-      ctx.fillText(lyricLine, 140, lyricY);
-
-      // 8. Vibe Breakdown
-      y += 300;
-      ctx.fillStyle = "#888888";
-      ctx.font = "bold 28px 'Space Grotesk', sans-serif";
-      ctx.fillText("AURA & VIBE PROFILE:", 100, y);
-
-      y += 50;
-      ctx.fillStyle = "#AAAAAA";
-      ctx.font = "28px 'Space Grotesk', sans-serif";
-      
-      const vibeWords = data.vibe.split(' ');
-      let vibeLine = '';
-      let vibeY = y;
-      for (let j = 0; j < vibeWords.length; j++) {
-        let testV = vibeLine + vibeWords[j] + ' ';
-        if (ctx.measureText(testV).width > 880 && j > 0) {
-          ctx.fillText(vibeLine, 100, vibeY);
-          vibeLine = vibeWords[j] + ' ';
-          vibeY += 45;
-        } else {
-          vibeLine = testV;
-        }
-      }
-      ctx.fillText(vibeLine, 100, vibeY);
-
-      // 9. Card Footer
-      ctx.fillStyle = "#444444";
-      ctx.font = "bold 24px 'Space Grotesk', monospace";
-      ctx.fillText("WHAT KESHI SONG ARE YOU? • KESHI DIAGNOSTIC CARD", 100, 1800);
-
-      // 10. Update Preview Image Tag (Clean 4K PNG, no watermark)
-      const dataUrl = canvas.toDataURL('image/png');
-      document.getElementById('card-preview-img').src = dataUrl;
-    }
-
-    function triggerDownload() {
-      const canvas = document.getElementById('story-canvas');
-      const image = canvas.toDataURL('image/png');
-      const link = document.createElement('a');
-      link.download = `keshi-diagnostic-card-${matchedTrackResult.toLowerCase().replace(/\s+/g, '-')}.png`;
-      link.href = image;
-      link.click();
-    }
-  </script>
-</body>
-</html>
+          class="w-full sm:w-1/2 px-6 py-4 bg-amber-500 text-black font-display font-extrabold text-xs uppercase tracking-widest rounded-lg hover:bg-amber-400 transition duration-200 shadow-lg text-center active:scale
