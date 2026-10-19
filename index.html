@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WHAT KESHI SONG ARE YOU? | Diagnostic Quiz</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Custom Fonts & Styling -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Space Grotesk', 'sans-serif'],
+            display: ['Syne', 'sans-serif'],
+          },
+          colors: {
+            keshiDark: '#0D0D0D',
+            keshiCard: '#141414',
+            keshiBorder: '#262626',
+            keshiText: '#F5F5F7',
+            keshiAccent: '#E5E5E5',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #0D0D0D;
+      color: #F5F5F7;
+    }
+    .grid-bg {
+      background-image: linear-gradient(to right, #1a1a1a 1px, transparent 1px),
+                        linear-gradient(to bottom, #1a1a1a 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+  </style>
+</head>
+<body class="grid-bg min-h-screen flex flex-col justify-between font-sans antialiased selection:bg-keshiText selection:text-keshiDark">
+
+  <!-- Header Navigation -->
+  <header class="w-full border-b border-keshiBorder px-6 py-4 flex justify-between items-center bg-keshiDark/80 backdrop-blur-md sticky top-0 z-50">
+    <div class="flex items-center space-x-2">
+      <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+      <span class="font-display font-extrabold text-sm tracking-widest text-keshiText uppercase">KESHI DIAGNOSTICS</span>
+    </div>
+    <div class="text-xs text-neutral-500 tracking-wider">
+      SYSTEM VER 1.0
+    </div>
+  </header>
+
+  <!-- Hero Container -->
+  <main class="flex-1 flex flex-col justify-center items-center px-4 py-12 text-center max-w-3xl mx-auto">
+    <div id="landing-card" class="bg-keshiCard border border-keshiBorder rounded-xl p-8 sm:p-12 shadow-2xl w-full">
+      
+      <!-- Aesthetic Badge -->
+      <div class="inline-block border border-keshiBorder px-3 py-1 rounded-full text-xs text-neutral-400 font-mono mb-6 uppercase tracking-widest">
+        10 Questions • 16 Tracks
+      </div>
+
+      <!-- Main Title -->
+      <h1 class="font-display font-extrabold text-3xl sm:text-5xl text-keshiText tracking-tight uppercase leading-none mb-4">
+        WHAT KESHI SONG ARE YOU?
+      </h1>
+
+      <p class="text-neutral-400 text-sm sm:text-base max-w-md mx-auto mb-8 leading-relaxed">
+        An interactive diagnostic test matching your emotional aura to 1 of 16 signature Keshi tracks.
+      </p>
+
+      <!-- Action Button -->
+      <button 
+        id="start-btn" 
+        onclick="alert('Phase 1 skeleton complete! Phase 2 will unlock the 10-question engine.')"
+        class="w-full sm:w-auto px-10 py-4 bg-keshiText text-keshiDark font-display font-extrabold text-sm uppercase tracking-widest rounded-lg hover:bg-neutral-300 transition duration-200 shadow-lg active:scale-95"
+      >
+        Enter Quiz
+      </button>
+
+      <!-- Status Footer -->
+      <div class="mt-8 pt-6 border-t border-keshiBorder flex flex-col sm:flex-row justify-between items-center text-xs text-neutral-500 gap-2">
+        <span>STATUS: SKELETON READY</span>
+        <span>4K STORY CARD READY</span>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="w-full border-t border-keshiBorder px-6 py-4 text-center text-xs text-neutral-600">
+    FAN PROJECT • NOT AFFILIATED WITH KESHI / ISLAND RECORDS
+  </footer>
+
+</body>
+</html>
