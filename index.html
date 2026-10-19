@@ -50,7 +50,7 @@
       <span class="font-display font-extrabold text-sm tracking-widest text-keshiText uppercase">KESHI DIAGNOSTICS</span>
     </div>
     <div class="text-xs text-neutral-500 tracking-wider font-mono">
-      SYSTEM VER 3.0
+      SYSTEM VER 4.0
     </div>
   </header>
 
@@ -135,10 +135,28 @@
         </div>
       </div>
 
-      <!-- Monetization & Download Actions -->
-      <div id="action-buttons-container" class="mt-6 flex flex-col items-center gap-3">
-        <!-- Dynamic Lock/Unlock CTA injected via JS -->
+      <!-- Free Download & Digital Tip Jar CTAs -->
+      <div class="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
+        <button 
+          onclick="triggerDownload()"
+          class="w-full sm:w-1/2 px-6 py-4 bg-keshiText text-keshiDark font-display font-extrabold text-xs uppercase tracking-widest rounded-lg hover:bg-neutral-300 transition duration-200 shadow-lg active:scale-95"
+        >
+          Download 4K Card
+        </button>
+
+        <a 
+          href="https://ko-fi.com" 
+          target="_blank"
+          id="tip-jar-link"
+          class="w-full sm:w-1/2 px-6 py-4 bg-amber-500 text-black font-display font-extrabold text-xs uppercase tracking-widest rounded-lg hover:bg-amber-400 transition duration-200 shadow-lg text-center active:scale-95 flex items-center justify-center gap-1"
+        >
+          <span>☕ Drop a $1 Tip</span>
+        </a>
       </div>
+
+      <p class="text-xs font-mono text-neutral-500 max-w-sm mx-auto mt-4 leading-relaxed">
+        Cards are 100% free! If you enjoyed this diagnostic, dropping $1 into our digital tip jar helps keep the site running.
+      </p>
     </div>
 
   </main>
@@ -153,7 +171,7 @@
 
   <!-- Quiz & Canvas Engine Script -->
   <script>
-    // 16 REVISED KESHI TRACK DATABASE
+    // 16 KESHI TRACK DATABASE
     const tracks = {
       "LIMBO": { lyric: "Ain't no way around it, I've been feeling down lately.", vibe: "Late night existentialism, driving through ambient city lights alone." },
       "UNDERSTAND": { lyric: "Never thought that I would find somebody like you.", vibe: "Soft devotion, gentle emotional vulnerability, peaceful quiet hours." },
@@ -319,10 +337,6 @@
     // Initialize Scores
     Object.keys(tracks).forEach(track => scores[track] = 0);
 
-    function isUnlocked() {
-      return window.location.search.includes('unlocked=true');
-    }
-
     function startQuiz() {
       document.getElementById('landing-screen').classList.add('hidden');
       document.getElementById('quiz-screen').classList.remove('hidden');
@@ -366,7 +380,6 @@
       document.getElementById('quiz-screen').classList.add('hidden');
       document.getElementById('result-screen').classList.remove('hidden');
 
-      // Find top scoring track
       let topTrack = "LIMBO";
       let maxScore = -1;
       for (const [track, score] of Object.entries(scores)) {
@@ -383,9 +396,7 @@
       document.getElementById('matched-lyric').innerText = `"${matchData.lyric}"`;
       document.getElementById('matched-vibe').innerText = matchData.vibe;
 
-      // Render Canvas Card and setup CTA
       renderCardCanvas();
-      setupActionButtons();
     }
 
     function renderCardCanvas() {
@@ -399,7 +410,7 @@
       ctx.fillStyle = "#0D0D0D";
       ctx.fillRect(0, 0, 1080, 1920);
 
-      // 2. Subtle Grid Border Lines
+      // 2. Border Framing
       ctx.strokeStyle = "#262626";
       ctx.lineWidth = 4;
       ctx.strokeRect(60, 60, 960, 1800);
@@ -438,7 +449,6 @@
       ctx.fillStyle = "#F5F5F7";
       ctx.font = "bold 72px 'Syne', sans-serif";
       
-      // Auto wrap long track titles
       const words = matchedTrackResult.toUpperCase().split(' ');
       let line = '';
       let y = 530;
@@ -463,12 +473,11 @@
       ctx.strokeRect(100, y, 880, 220);
 
       ctx.fillStyle = "#F5F5F7";
-      ctx.fillRect(100, y, 12, 220); // Left vertical line
+      ctx.fillRect(100, y, 12, 220);
 
       ctx.fillStyle = "#CCCCCC";
       ctx.font = "italic 32px 'Space Grotesk', sans-serif";
       
-      // Wrap Lyric Text
       const lyricWords = `"${data.lyric}"`.split(' ');
       let lyricLine = '';
       let lyricY = y + 70;
@@ -514,57 +523,9 @@
       ctx.font = "bold 24px 'Space Grotesk', monospace";
       ctx.fillText("WHAT KESHI SONG ARE YOU? • KESHI DIAGNOSTIC CARD", 100, 1800);
 
-      // 10. Watermark Logic
-      if (!isUnlocked()) {
-        ctx.save();
-        ctx.translate(540, 960);
-        ctx.rotate(-Math.PI / 4);
-        ctx.fillStyle = "rgba(239, 68, 68, 0.22)";
-        ctx.font = "bold 52px 'Syne', sans-serif";
-        ctx.textAlign = "center";
-        ctx.fillText("PREVIEW • PAY $1 TO UNLOCK 4K CARD", 0, -100);
-        ctx.fillText("PREVIEW • PAY $1 TO UNLOCK 4K CARD", 0, 0);
-        ctx.fillText("PREVIEW • PAY $1 TO UNLOCK 4K CARD", 0, 100);
-        ctx.restore();
-      }
-
-      // 11. Update Preview Image Tag
+      // 10. Update Preview Image Tag (Clean 4K PNG, no watermark)
       const dataUrl = canvas.toDataURL('image/png');
       document.getElementById('card-preview-img').src = dataUrl;
-    }
-
-    function setupActionButtons() {
-      const container = document.getElementById('action-buttons-container');
-      container.innerHTML = '';
-
-      if (isUnlocked()) {
-        // Unlocked State: Download Trigger
-        const downloadBtn = document.createElement('button');
-        downloadBtn.className = "w-full sm:w-auto px-10 py-4 bg-green-500 text-black font-display font-extrabold text-sm uppercase tracking-widest rounded-lg hover:bg-green-400 transition duration-200 shadow-lg active:scale-95";
-        downloadBtn.innerText = "Download Unwatermarked 4K PNG";
-        downloadBtn.onclick = triggerDownload;
-
-        const successText = document.createElement('p');
-        successText.className = "text-xs font-mono text-green-400 mt-2";
-        successText.innerText = "✓ Payment verified. High-res download ready!";
-
-        container.appendChild(downloadBtn);
-        container.appendChild(successText);
-      } else {
-        // Locked State: $1 Ko-fi Paywall Trigger
-        const paywallBtn = document.createElement('a');
-        paywallBtn.href = "https://ko-fi.com"; // Replace with exact Ko-fi digital item link in Phase 4
-        paywallBtn.target = "_blank";
-        paywallBtn.className = "inline-block w-full sm:w-auto px-10 py-4 bg-keshiText text-keshiDark font-display font-extrabold text-sm uppercase tracking-widest rounded-lg hover:bg-neutral-300 transition duration-200 shadow-lg text-center active:scale-95";
-        paywallBtn.innerText = "Unlock High-Res 4K Card ($1)";
-
-        const helperText = document.createElement('p');
-        helperText.className = "text-xs font-mono text-neutral-500 max-w-sm mt-1";
-        helperText.innerText = "After paying $1 on Ko-fi, you'll be redirected back to download your unwatermarked card.";
-
-        container.appendChild(paywallBtn);
-        container.appendChild(helperText);
-      }
     }
 
     function triggerDownload() {
