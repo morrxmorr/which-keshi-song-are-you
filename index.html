@@ -148,8 +148,7 @@
         </button>
 
         <a 
-          href="https://ko-fi.com" 
-          target="_blank"
+          href="donation.html" 
           id="tip-jar-link"
           class="w-full sm:w-1/2 px-6 py-4 bg-amber-500 text-black font-display font-extrabold text-xs uppercase tracking-widest rounded-lg hover:bg-amber-400 transition duration-200 shadow-lg text-center active:scale-95 flex items-center justify-center gap-1"
         >
@@ -470,7 +469,7 @@
       renderCardCanvas();
     }
 
-    // CANVAS ENGINE WITH KESHI ARTIST PHOTO INTEGRATION
+    // CANVAS ENGINE WITH KESHI ARTIST PHOTO & SCALED STORY TYPOGRAPHY
     function renderCardCanvas() {
       const canvas = document.getElementById('story-canvas');
       const ctx = canvas.getContext('2d');
@@ -538,7 +537,7 @@
       ctx.font = "bold 26px 'Space Grotesk', sans-serif";
       ctx.fillText("// MATCHED AURA SPECTRUM", 100, 350);
 
-      // 8. Track Title
+      // 8. Track Title (Huge Display Font: 84px)
       ctx.font = "extrabold 84px 'Syne', sans-serif";
       const trackTitleUpper = matchedTrackResult.toUpperCase();
       
@@ -563,7 +562,6 @@
       if (artistImg && artistImg.complete && artistImg.naturalWidth !== 0) {
         drawCoverImage(ctx, artistImg, 100, photoY, 880, 360);
       } else {
-        // Fallback Dark Box if image is loading
         ctx.fillStyle = "#141414";
         ctx.fillRect(100, photoY, 880, 360);
         ctx.strokeStyle = "#2A2A2A";
@@ -681,7 +679,6 @@
       ctx.clip();
       ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
       
-      // Gradient overlay blending image into canvas background
       const fadeGrad = ctx.createLinearGradient(x, y + h - 140, x, y + h);
       fadeGrad.addColorStop(0, "rgba(10, 10, 10, 0)");
       fadeGrad.addColorStop(1, "rgba(10, 10, 10, 0.85)");
@@ -690,7 +687,6 @@
 
       ctx.restore();
 
-      // Border and framing
       ctx.strokeStyle = "#2A2A2A";
       ctx.lineWidth = 3;
       ctx.strokeRect(x, y, w, h);
