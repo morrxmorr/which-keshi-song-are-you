@@ -79,9 +79,8 @@
       </p>
 
       <!-- Zelle QR Code Box Frame -->
-      <div class="bg-black border border-keshiBorder p-4 rounded-xl inline-block shadow-2xl my-2 max-w-[260px] w-full">
+      <div class="bg-black border border-keshiBorder p-4 rounded-xl inline-block shadow-2xl my-2 max-w-[280px] w-full">
         <div class="border border-neutral-800 p-2 rounded-lg bg-white">
-          <!-- Replace 'zelle-qr.png' with your actual Zelle QR code image file -->
           <img 
             id="zelle-qr-img" 
             src="zelle-qr.png" 
@@ -90,29 +89,6 @@
             onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'p-8 text-black font-mono text-xs text-center border-2 border-dashed border-gray-300\'>Scan Zelle QR Code Here<br><br><span class=\'text-[10px] text-gray-500\'>Save your Zelle QR as zelle-qr.png</span></div>';"
           />
         </div>
-      </div>
-
-      <!-- Direct Zelle Details & Copy Field -->
-      <div class="mt-6 text-left bg-neutral-900/80 border border-keshiBorder p-4 rounded-lg">
-        <span class="block text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-1">
-          OR SEND DIRECTLY VIA ZELLE APP:
-        </span>
-        
-        <div class="flex items-center justify-between bg-keshiDark border border-keshiBorder px-3 py-2 rounded font-mono text-xs text-keshiText">
-          <!-- Replace with your actual Zelle email or phone number -->
-          <span id="zelle-id">your-zelle-email@domain.com</span>
-          <button 
-            onclick="copyZelleID()" 
-            id="copy-btn"
-            class="text-[10px] uppercase font-bold text-amber-400 hover:text-amber-300 transition ml-2 border border-amber-500/30 px-2 py-1 rounded bg-amber-500/10"
-          >
-            Copy
-          </button>
-        </div>
-
-        <p class="text-[11px] font-mono text-neutral-400 mt-3 leading-normal">
-          <span class="text-amber-400 font-bold">Tip:</span> Please include your <span class="underline">Instagram / X handle</span> or <span class="underline">matched Keshi song</span> in the Zelle memo!
-        </p>
       </div>
 
       <!-- Action Footer -->
@@ -133,21 +109,6 @@
   <footer class="w-full border-t border-keshiBorder px-6 py-4 text-center text-xs text-neutral-600">
     FAN PROJECT • NOT AFFILIATED WITH KESHI / ISLAND RECORDS
   </footer>
-
-  <script>
-    function copyZelleID() {
-      const zelleID = document.getElementById('zelle-id').innerText;
-      navigator.clipboard.writeText(zelleID).then(() => {
-        const btn = document.getElementById('copy-btn');
-        btn.innerText = "COPIED!";
-        btn.classList.replace('text-amber-400', 'text-green-400');
-        setTimeout(() => {
-          btn.innerText = "COPY";
-          btn.classList.replace('text-green-400', 'text-amber-400');
-        }, 2000);
-      });
-    }
-  </script>
 
 </body>
 </html>
