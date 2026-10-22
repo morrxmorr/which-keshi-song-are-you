@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SUPPORT | Keshi Diagnostics Tip Jar</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Custom Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Space Grotesk', 'sans-serif'],
+            display: ['Syne', 'sans-serif'],
+          },
+          colors: {
+            keshiDark: '#0A0A0A',
+            keshiCard: '#121212',
+            keshiBorder: '#262626',
+            keshiText: '#F5F5F7',
+            keshiAccent: '#333333',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #0A0A0A;
+      color: #F5F5F7;
+    }
+    .grid-bg {
+      background-image: linear-gradient(to right, #171717 1px, transparent 1px),
+                        linear-gradient(to bottom, #171717 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+  </style>
+</head>
+<body class="grid-bg min-h-screen flex flex-col justify-between font-sans antialiased selection:bg-keshiText selection:text-keshiDark">
+
+  <!-- Header Navigation -->
+  <header class="w-full border-b border-keshiBorder px-6 py-4 flex justify-between items-center bg-keshiDark/80 backdrop-blur-md sticky top-0 z-50">
+    <a href="index.html" class="flex items-center space-x-2 hover:opacity-80 transition">
+      <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+      <span class="font-display font-extrabold text-sm tracking-widest text-keshiText uppercase">KESHI DIAGNOSTICS</span>
+    </a>
+    <a href="index.html" class="text-xs font-mono text-neutral-400 border border-keshiBorder px-3 py-1.5 rounded hover:border-keshiText transition">
+      ← BACK TO QUIZ
+    </a>
+  </header>
+
+  <!-- Main Support Container -->
+  <main class="flex-1 flex flex-col justify-center items-center px-4 py-12 max-w-lg mx-auto w-full">
+
+    <div class="bg-keshiCard border border-keshiBorder rounded-xl p-6 sm:p-10 shadow-2xl w-full text-center relative overflow-hidden">
+      
+      <!-- Corner Crosshair Decorations -->
+      <div class="absolute top-3 left-3 text-neutral-600 font-mono text-xs">+</div>
+      <div class="absolute top-3 right-3 text-neutral-600 font-mono text-xs">+</div>
+      <div class="absolute bottom-3 left-3 text-neutral-600 font-mono text-xs">+</div>
+      <div class="absolute bottom-3 right-3 text-neutral-600 font-mono text-xs">+</div>
+
+      <!-- Badge -->
+      <div class="inline-block border border-keshiBorder px-3 py-1 rounded-full text-xs text-neutral-400 font-mono mb-4 uppercase tracking-widest">
+        DIGITAL TIP JAR • $1.00
+      </div>
+
+      <!-- Main Title -->
+      <h1 class="font-display font-extrabold text-3xl sm:text-4xl text-keshiText tracking-tight uppercase mb-2">
+        SUPPORT THE PROJECT
+      </h1>
+      <p class="text-neutral-400 text-xs sm:text-sm max-w-sm mx-auto mb-6 leading-relaxed font-mono">
+        This app is 100% free! If you enjoyed generating your 4K Keshi card, dropping $1 into our tip jar helps cover site hosting and student project costs.
+      </p>
+
+      <!-- Zelle QR Code Box Frame -->
+      <div class="bg-black border border-keshiBorder p-4 rounded-xl inline-block shadow-2xl my-2 max-w-[260px] w-full">
+        <div class="border border-neutral-800 p-2 rounded-lg bg-white">
+          <!-- Replace 'zelle-qr.png' with your actual Zelle QR code image file -->
+          <img 
+            id="zelle-qr-img" 
+            src="zelle-qr.png" 
+            alt="Zelle QR Code" 
+            class="w-full h-auto rounded block object-contain mx-auto"
+            onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'p-8 text-black font-mono text-xs text-center border-2 border-dashed border-gray-300\'>Scan Zelle QR Code Here<br><br><span class=\'text-[10px] text-gray-500\'>Save your Zelle QR as zelle-qr.png</span></div>';"
+          />
+        </div>
+      </div>
+
+      <!-- Direct Zelle Details & Copy Field -->
+      <div class="mt-6 text-left bg-neutral-900/80 border border-keshiBorder p-4 rounded-lg">
+        <span class="block text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-1">
+          OR SEND DIRECTLY VIA ZELLE APP:
+        </span>
+        
+        <div class="flex items-center justify-between bg-keshiDark border border-keshiBorder px-3 py-2 rounded font-mono text-xs text-keshiText">
+          <!-- Replace with your actual Zelle email or phone number -->
+          <span id="zelle-id">your-zelle-email@domain.com</span>
+          <button 
+            onclick="copyZelleID()" 
+            id="copy-btn"
+            class="text-[10px] uppercase font-bold text-amber-400 hover:text-amber-300 transition ml-2 border border-amber-500/30 px-2 py-1 rounded bg-amber-500/10"
+          >
+            Copy
+          </button>
+        </div>
+
+        <p class="text-[11px] font-mono text-neutral-400 mt-3 leading-normal">
+          <span class="text-amber-400 font-bold">Tip:</span> Please include your <span class="underline">Instagram / X handle</span> or <span class="underline">matched Keshi song</span> in the Zelle memo!
+        </p>
+      </div>
+
+      <!-- Action Footer -->
+      <div class="mt-8 pt-6 border-t border-keshiBorder flex flex-col sm:flex-row gap-3">
+        <a 
+          href="index.html" 
+          class="w-full py-3.5 bg-keshiText text-keshiDark font-display font-extrabold text-xs uppercase tracking-widest rounded-lg hover:bg-neutral-300 transition duration-200 text-center block"
+        >
+          Return to Quiz
+        </a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="w-full border-t border-keshiBorder px-6 py-4 text-center text-xs text-neutral-600">
+    FAN PROJECT • NOT AFFILIATED WITH KESHI / ISLAND RECORDS
+  </footer>
+
+  <script>
+    function copyZelleID() {
+      const zelleID = document.getElementById('zelle-id').innerText;
+      navigator.clipboard.writeText(zelleID).then(() => {
+        const btn = document.getElementById('copy-btn');
+        btn.innerText = "COPIED!";
+        btn.classList.replace('text-amber-400', 'text-green-400');
+        setTimeout(() => {
+          btn.innerText = "COPY";
+          btn.classList.replace('text-green-400', 'text-amber-400');
+        }, 2000);
+      });
+    }
+  </script>
+
+</body>
+</html>
